@@ -19,6 +19,8 @@
 
   "scripts" : [ "grapplehook.lua" ],
   
+  "ropeHook" : true,
+  
   "actionOnCollide" : [
     {
       "action" : "sound",

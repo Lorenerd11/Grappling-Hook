@@ -24,8 +24,7 @@
 
   "projectileType" : "grapplehook",
   "projectileParameters" : {
-    "speed" : 100,
-    "timeToLive" : 0.35
+    "speed" : 100
   },
 
   "ropeWidth" : 1.0,
