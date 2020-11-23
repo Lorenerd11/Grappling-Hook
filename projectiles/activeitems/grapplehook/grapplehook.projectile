@@ -5,6 +5,7 @@
   "frameNumber" : 1,
   "pointLight" : false,
   "flippable" : false,
+  "orientationLocked" : true,
   "actionOnReap" : [ ],
   "statusEffects" : [ ],
   "power" : 0.0,
@@ -13,13 +14,11 @@
   "physics" : "grapplehook",
   "bounces" : -1,
   "piercing" : true,
-  "timeToLive" : 5,
+  "timeToLive" : 8.5,
 
   "onlyHitTerrain" : true,
 
   "scripts" : [ "grapplehook.lua" ],
-
-  "breakOnSlipperyCollision" : true,
 
   "actionOnCollide" : [
     {
@@ -39,5 +38,8 @@
         "/sfx/projectiles/ropehook_impact12.ogg"
       ]
     }
-  ]
+  ],
+
+  "pickupDistance" : 2.0,
+  "snapDistance" : 6.0
 }

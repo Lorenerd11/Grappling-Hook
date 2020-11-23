@@ -27,14 +27,21 @@ function init()
   self.projectilePosition = nil
   self.anchored = false
   self.previousMoves = {}
-  self.previousFireMode = nil
+  self.previousFireMode = 
+  
+  animator.setGlobalTag("currentState", "idle")
 end
 
 function uninit()
   cancel()
+  killRope()
 end
 
 function update(dt, fireMode, shiftHeld, moves)
+  if self.projectileId and not world.entityExists(self.projectileId) then
+    killRope()
+  end
+  
   if fireMode == "primary" and self.previousFireMode ~= "primary" then
     if self.projectileId then
       cancel()
@@ -129,22 +136,27 @@ function fire()
 
   if self.projectileId then
     animator.playSound("fire")
+    animator.setGlobalTag("currentState", "fired")
     status.setPersistentEffects("grapplingHook"..activeItem.hand(), {{stat = "activeMovementAbilities", amount = 0.5}})
   end
 end
 
 function cancel()
   if self.projectileId and world.entityExists(self.projectileId) then
-    world.callScriptedEntity(self.projectileId, "kill")
+    world.callScriptedEntity(self.projectileId, "returnToSender", entity.id())
   end
   if self.projectileId and self.anchored and self.consumeOnUse then
     item.consume(1)
   end
-  self.projectileId = nil
-  self.projectilePosition = nil
   self.anchored = false
+end
+
+function killRope()
+  animator.setGlobalTag("currentState", "idle")
   updateRope({})
   status.clearPersistentEffects("grapplingHook"..activeItem.hand())
+  self.projectileId = nil
+  self.projectilePosition = nil
 end
 
 function swing(moves)
