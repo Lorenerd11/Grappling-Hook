@@ -32,6 +32,7 @@
 
   "reelInDistance" : 3.5,
   "reelOutLength" : 50,
+  "launchLength" : 30,
   "breakLength" : 60,
 
   "minSwingDistance" : 1.5,

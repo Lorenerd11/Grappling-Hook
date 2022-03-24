@@ -12,7 +12,7 @@ function init()
   self.timeToLive = config.getParameter("timeToLive")
   self.speed = config.getParameter("speed")
   
-  self.returnTime = 2
+  self.returnTime = 1.5
   self.returnTimer = self.returnTime
   
   message.setHandler("returnToSender", returnToSender)
@@ -45,14 +45,17 @@ function update(dt)
 end
 
 function anchored()
-  if not self.returning then return mcontroller.stickingDirection() else return false end
+  if not self.returning then
+    return mcontroller.stickingDirection()
+  else
+    return false
+  end
 end
 
 function returnToSender(ownerId)
   if self.ropeHook then
     kill()
   end
-
   if ownerId then
     self.ownerId = ownerId
   end
@@ -65,8 +68,12 @@ function kill()
 end
 
 function shouldDestroy()
-  if not (self.ownerId and world.entityExists(self.ownerId)) then return true end
-  if self.anchored then return false end
+  if self.anchored then
+    return false
+  end
+  if not (self.ownerId and world.entityExists(self.ownerId)) then
+    return true
+  end
   local toTarget = world.distance(world.entityPosition(self.ownerId), mcontroller.position())
-  return vec2.mag(toTarget) < self.pickupDistance
+  return vec2.mag(toTarget) <= self.pickupDistance or self.returnTimer <= 0
 end

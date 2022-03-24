@@ -11,6 +11,7 @@ function init()
   self.projectileParameters = config.getParameter("projectileParameters")
   self.reelInDistance = config.getParameter("reelInDistance")
   self.reelOutLength = config.getParameter("reelOutLength")
+  self.launchLength = config.getParameter("launchLength") or config.getParameter("reelOutLength")
   self.breakLength = config.getParameter("breakLength")
   self.minSwingDistance = config.getParameter("minSwingDistance")
   self.reelSpeed = config.getParameter("reelSpeed")
@@ -28,7 +29,6 @@ function init()
   self.anchored = false
   self.previousMoves = {}
   self.previousFireMode = 
-  
   animator.setGlobalTag("currentState", "idle")
 end
 
@@ -74,7 +74,7 @@ function update(dt, fireMode, shiftHeld, moves)
       windRope(newRope)
       updateRope(newRope)
 
-      if not self.anchored and self.ropeLength > self.reelOutLength then
+      if not self.anchored and self.ropeLength > self.launchLength then
         cancel()
       end
     else
@@ -157,6 +157,13 @@ function killRope()
   status.clearPersistentEffects("grapplingHook"..activeItem.hand())
   self.projectileId = nil
   self.projectilePosition = nil
+end
+
+function killHook()
+  if self.projectileId and world.entityExists(self.projectileId) then
+    world.callScriptedEntity(self.projectileId, "kill")
+    sb.logInfo("Killing the hook")
+  end
 end
 
 function swing(moves)
